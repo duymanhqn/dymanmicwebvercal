@@ -1,26 +1,17 @@
-const pool = require("./db");
-const bcrypt = require("bcryptjs");
+import pool from "./db.js"
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
 
-  if (req.method !== "POST")
-    return res.status(405).send("Only POST");
+ if (req.method !== "POST") {
+  return res.status(405).json({ message: "Method not allowed" })
+ }
 
-  const { fullname, username, password } = req.body;
+ const { username, email, password } = req.body
 
-  const hash = await bcrypt.hash(password, 10);
+ await pool.query(
+  'INSERT INTO "user" (username,email,password) VALUES ($1,$2,$3)',
+  [username, email, password]
+ )
 
-  try {
-
-    await pool.query(
-      `INSERT INTO "user"(fullname,username,password)
-       VALUES ($1,$2,$3)`,
-      [fullname, username, hash]
-    );
-
-    res.json({ message: "Đăng ký thành công ✅" });
-
-  } catch {
-    res.json({ error: "Username đã tồn tại" });
-  }
-};
+ res.json({ message: "Register success" })
+}

@@ -1,32 +1,39 @@
 <link rel="stylesheet" href="style.css">
 
 <div class="container">
-  <h2>🔐 Đăng nhập</h2>
+<h2>🔐 Login</h2>
 
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-  <button onclick="login()">Login</button>
+<button onclick="login()">Login</button>
+
+<p>No account?</p>
+<a href="/register.html">Register here</a>
 </div>
 
 <script>
 async function login(){
 
-  const res = await fetch("/api/login",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      username:username.value,
-      password:password.value
-    })
-  });
+const res = await fetch("/api/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+email:email.value,
+password:password.value
+})
+})
 
-  const data = await res.json();
+const data = await res.json()
 
-  alert(data.message || data.error);
+alert(data.message)
 
-  if(data.message){
-    window.location="/";
-  }
+if(data.message==="Login success"){
+localStorage.setItem("login","true")
+window.location.href="/home.html"
+}
+
 }
 </script>

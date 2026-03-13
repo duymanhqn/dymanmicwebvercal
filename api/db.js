@@ -1,10 +1,10 @@
-const { Pool } = require("pg");
+import pkg from "pg"
+const { Pool } = pkg
 
 const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+  connectionString:
+    process.env.DATABASE_URL ||
+    "postgresql://postgres:123456@localhost:5433/test_db"
+})
 
-module.exports = pool;
+export default pool
