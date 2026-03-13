@@ -1,6 +1,6 @@
 const { Pool } = require("pg");
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.POSTGRES_URL;
 
 const pool = connectionString
   ? new Pool({
